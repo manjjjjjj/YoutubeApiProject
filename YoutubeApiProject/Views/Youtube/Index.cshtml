@@ -1,0 +1,40 @@
+﻿@model List<YouTubeApiProject.Models.YouTubeVideoModel>
+
+<h2>Search YouTube Videos</h2>
+
+<form asp-action="Search" method="post" class="form-inline mb-3">
+    <input type="text" name="query" class="form-control mr-2" placeholder="Search for videos..." required />
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+@if (Model != null && Model.Any())
+{
+    <div class="row">
+        @foreach (var video in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="@video.ThumbnailUrl" class="card-img-top" alt="@video.Title" />
+                    <div class="card-body">
+                        <h5 class="card-title">@video.Title</h5>
+                        <p class="card-text">@video.Description</p>
+                        <br />
+                        <a href="@video.VideoUrl" target="_blank">
+                            <button type="button">Watch</button>
+                            <!-- Watch button -->
+                        </a>
+                    </div>
+
+                    </div>
+                </div>
+            
+        }
+    </div>
+    @if (ViewBag.NextPageToken != null)
+    {
+        <form asp-action="Search" method="post">
+            <input type="hidden" name="query" value="@ViewBag.Query" />
+            <input type="hidden" name="pageToken" value="@ViewBag.NextPageToken" />
+            <button type="submit">Load More</button>
+        </form>
+    }
+}
